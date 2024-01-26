@@ -9,52 +9,19 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <pthread.h>
-#include <fcntl.h>
 
-#define MAXDATASIZE 100
+#include "../../include/server_utils.h"
+#include "../../include/client_utils.h"
 
 pthread_mutex_t inp_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void *get_in_addr(struct sockaddr *sa) {
-    if (sa->sa_family == AF_INET) {
-        return &(((struct sockaddr_in *)sa)->sin_addr);
-    }
-    return &(((struct sockaddr_in6 *)sa)->sin6_addr);
-}
-
-void *receive_message(void *args) {
-    int sockfd = *(int *)args;
-    char server_buffer[1024];
-
-    while(1){
-        memset(server_buffer, 0, sizeof(server_buffer));
-
-        ssize_t bytes_received = recv(sockfd, server_buffer, sizeof(server_buffer) - 1, 0);
-        if (bytes_received == -1) {
-            // No data received, it's non-blocking, so this can happen
-            continue;
-        } else if (bytes_received == 0) {
-            // Connection closed by the server
-            printf("Server closed the connection\n");
-            break;
-        }
-
-        server_buffer[strcspn(server_buffer, "\n")] = '\0';
-
-        puts(server_buffer);
-    }
-
-    return NULL;
-}
-
 int main(int argc, char *argv[]) {
-    int sockfd, numbytes;
+    int sockfd;
     struct addrinfo hints, *servinfo, *p;
     int rv;
-    char s[INET6_ADDRSTRLEN];
     char servaddress[32];
     char port[32];
-    char inp_buffer[1024], server_buffer[1024];
+    char inp_buffer[1024];
     char username[1024];
     char client_name[1024];
 
@@ -116,7 +83,6 @@ int main(int argc, char *argv[]) {
 
         strcpy(username, client_name);
         
-        int n = 0;
 
         fgets(inp_buffer, sizeof(inp_buffer), stdin);
 
