@@ -3,8 +3,9 @@
 Aplicação desenvolvido para testar conceitos como sockets e threads em C. 
 
 ### Como compilar
-Rode "make" no diretório do programa.
+Clone o repositório e rode "make" no diretório principal:
 ```
+    git clone https://github.com/txdtt/unirc-threads/
     make
 ```
 
