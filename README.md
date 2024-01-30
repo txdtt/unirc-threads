@@ -1,6 +1,6 @@
 # Unirc (Unirc is Not IRC)
 ### Thread-based TCP/IP Chat Application
-Aplicação desenvolvido para testar conceitos como sockets e threads em C. 
+Aplicação desenvolvida para testar conceitos como sockets e threads em C. 
 
 ### Como compilar
 Clone o repositório e rode "make" no diretório principal:
