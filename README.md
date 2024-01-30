@@ -1,5 +1,5 @@
 # Unirc (Unirc is Not IRC)
-## Thread-based TCP/IP Chat application
+### Thread-based TCP/IP Chat application
 Aplicação desenvolvido para testar conceitos como sockets e threads em C. 
 
 ### Como compilar
