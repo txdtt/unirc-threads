@@ -1,7 +1,7 @@
 SERVER_SRC_DIR := src/server
 CLIENT_SRC_DIR := src/client
 SERVER_OBJ_DIR := obj/server
-CLIENT_OBJ_DIR := obj/server
+CLIENT_OBJ_DIR := obj/client
 BIN_DIR := .
 
 SERVER_SRC := $(wildcard $(SERVER_SRC_DIR)/*.c)
@@ -42,6 +42,6 @@ $(CLIENT_OBJ_DIR):
 	mkdir -p $@
 
 clean:
-	@$(RM) -rv $(OBJ_DIR)
+	@$(RM) -rv $(SERVER_OBJ_DIR) $(CLIENT_OBJ_DIR)
 
 -include $(SERVER_OBJ:.o=.d) $(CLIENT_OBJ:.o=.d)

@@ -28,15 +28,25 @@ int thread_id = 0;
 void *relay_message(int thread_id_local) {
 
     for (int i = 0; i < thread_id; i++) {
-        if (i != thread_id_local && client_data[i].client_sockfd != -1 && client_data[i].client_sockfd != 0) {
+
+        if (client_data[i].client_sockfd == 0) {
+            printf("Client disconnected\n");
+            break;
+        }
+
+        if (i != thread_id_local && client_data[i].client_sockfd != -1) {
+
             ssize_t sent_bytes = send(client_data[i].client_sockfd, inp_buffer, strlen(inp_buffer), 0);
+
             if (sent_bytes == -1) {
                 perror("send");
                 printf("Error sending to client %d\n", i);
             } else {
                 printf("Sent %zd bytes to client %d: %s\n", sent_bytes, i, inp_buffer);
             }
+
         }
+
     }
 
     return NULL;
@@ -54,6 +64,8 @@ void *get_in_addr(struct sockaddr *sa) {
 void *client_thread(void *args) {
     struct client_data *client_data_thread = (struct client_data *)args;    
 
+    int thread_id_local = client_data_thread->client_id;
+
     printf("THREAD ID %ld CREATED\n", (long)pthread_self());
     
     //printf("THREAD ID %d CLIENT_ID\n", thread_id_local);
@@ -63,7 +75,6 @@ void *client_thread(void *args) {
     printf("SERVER SOCKET FD %d\n", client_data_thread->server_sockfd);
 
     while(1) {
-        int thread_id_local = client_data_thread->client_id;
 
         memset(inp_buffer, 0, sizeof(inp_buffer));
 
@@ -74,12 +85,9 @@ void *client_thread(void *args) {
         } else if (bytes_received == 0 || strncmp(inp_buffer, "exit", 4) == 0) {
             printf("Client disconnected\n");
             close(client_data_thread->client_sockfd);
-            /*for (int i = thread_id_local; i <= thread_id; i++) {
-                client_data[i].client_id -= 1;
-                thread_array[i] -= 1;
-                thread_id--;
-            }*/
-            pthread_exit(&thread_array[thread_id_local]);
+            //thread_array[thread_id] = thread_array[thread_id - 1];
+            //thread_id--;
+            pthread_exit(&thread_array[client_data_thread->client_id]);
             return NULL;
         }
 

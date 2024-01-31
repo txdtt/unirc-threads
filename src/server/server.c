@@ -67,7 +67,6 @@ int main() {
     printf("server waiting for connection... \n");
 
     while(1) {
-
         client_data[thread_id].server_sockfd = sockfd;
 
         client_data[thread_id].sin_size = sizeof(client_data[thread_id].client_addr);

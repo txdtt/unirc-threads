@@ -10,12 +10,9 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#include "../../include/server_utils.h"
 #include "../../include/client_utils.h"
 
-pthread_mutex_t inp_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
-
-int main(int argc, char *argv[]) {
+int main() {
     int sockfd;
     struct addrinfo hints, *servinfo, *p;
     int rv;
